@@ -1,13 +1,14 @@
 <!doctype html>
 <html lang='en'>
-  <head>
+
+<head>
     <!-- Required meta tags -->
-    <title>{LEAGUE} | Pomelo</title>
+    <title>{{ league }} | Pomelo</title>
     <meta charset='utf-8'>
-	<meta name='description' content='Pomelo is a self-hosted opensource tournament web-server and local script' />
+    <meta name='description' content='Pomelo is a self-hosted opensource tournament web-server and local script' />
     <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
-    <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/raleway' type='text/css'/>
-    <link rel='icon' href='/pomelo/img/favicon.png'>
+    <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/raleway' type='text/css' />
+    <link rel='icon' href='/static/img/favicon.png'>
 
     <!-- Colors and bars -->
     <!-- Chrome, Firefox OS and Opera -->
@@ -20,27 +21,32 @@
 
     <meta name='HandheldFriendly' content='true' />
     <meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name='mobile-web-app-capable' content='yes'>
+    <meta name='mobile-web-app-capable' content='yes'>
 
     <!-- bootstrap -->
-    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
+        integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>
     <!-- <script src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script> -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>
-    <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js'
+        integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1'
+        crossorigin='anonymous'></script>
+    <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'
+        integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM'
+        crossorigin='anonymous'></script>
 
-    <script src='/pomelo/js/script.js'></script>
+    <script src='/static/js/script.js'></script>
 
-    <link rel='stylesheet' href='/pomelo/css/main.css' />
-  </head>
+    <link rel='stylesheet' href='/static/css/main.css' />
+</head>
 
 <body>
 
-    <img id='logo' src='{LOGO}' height='90px' width='90px' alt='Logo description' />
+    <img id='logo' src='/static/img/pomelo.png' height='90px' width='90px' alt='Logo description' />
 
     <span id='title'>
-        <h1 id='title'>{LEAGUE}</h1>
+        <h1 id='title'>{{ league }}</h1>
         <a href='#' id="admin_button" class='adminButton'>
             <ion-icon id="admin_icon" size='large' name='add'></ion-icon>
         </a>
@@ -51,8 +57,7 @@
 
             <h4>Matches</h4><br>
 
-            <!-- aggiungi risultato -->
-            <form action="/pomelo/submit.php?league={LEAGUE}" method="post">
+            <form action="/static/submit.php?league={LEAGUE}" method="post">
                 <input type="hidden" name="league" value="{LEAGUE}">
                 <input type="hidden" name="action" value="update">
                 <div class="input-group input-padding">
@@ -63,7 +68,7 @@
 
                     <div class="input-group-append">
                         <span class="input-group-text league-icon" style="border-right:none;">
-                             vs
+                            vs
                             <!-- <ion-icon name="md-swap" size="large"></ion-icon> -->
                         </span>
                     </div>
@@ -88,17 +93,18 @@
             </form>
 
 
-            <br /><h4>Players and teams</h4><br>
+            <br />
+            <h4>Players and teams</h4><br>
 
-            <form action="/pomelo/submit.php?league={LEAGUE}" method="post">
-                <input type="hidden" name="action" value="delete">
+            <form action="/{{ league }}/delete_player" method="post">
                 <div class="input-group input-padding">
                     <div class="input-group-prepend">
                         <span class="input-group-text">delete</span>
                     </div>
-                    <select class="custom-select" name="players">
-                        <option value="" disabled selected>Players</option>
-                        {PLAYERS}
+                    <select class="custom-select" name="player">
+                        {% for player in players %}
+                            <option value='{{ player }}'>{{ player }}</option>
+                        {% endfor %}
                     </select>
 
                     <div class="input-group-append">
@@ -109,15 +115,13 @@
                 </div>
             </form>
 
-            <!-- aggiungi giocatore -->
-            <form action="/pomelo/submit.php?league={LEAGUE}" method="post">
-                <input type="hidden" name="action" value="add">
+            <form action="/{{ league }}/player" method="post">
                 <div class="input-group input-padding">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">add</span>
                     </div>
 
-                    <input class="form-control" name="newPlayer" placeholder="Name">
+                    <input class="form-control" name="player" placeholder="Name">
 
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary bg-danger text-white bigFontButton" type="submit">
@@ -133,9 +137,6 @@
     <div id='content' class='container-fluid'>
 
         <center>
-            <img id='qr' src='img/qr.png' height='140px' width='140px' alt='qr url' /><br>
-            <caption><small>Use the QR code to share the page!</small></caption><br>
-
             <br>
             <div class='mr-2' role='group' aria-label='1g'>
                 <div class='btn-group mr-2' id="button-select" role='group' aria-label='2g'>
@@ -153,21 +154,55 @@
             <div class='col fade-table collapse-ranking' id='ranking'>
                 <h4 class='titleSection'>Ranking</h4>
                 <p class='centered'>
-                    <!-- #### RANKING #### -->
+                <table class='table table-sm text-center table-bordered table-striped'>
+                    <thead class=''>
+                        <tr>
+                            <th scope='col'>Name</th>
+                            <th scope='col'>Points</th>
+                            <th scope='col'>Match</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for name, points, matchcount in ranking_stable %}
+                        <tr class='table-success success'>
+                            <td> {{ name }}</td>
+                            <td> {{ points }} </td>
+                            <td> {{ matchcount }} </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
-                    {RANKING}
-
+                <table class='table table-sm text-center table-bordered table-striped'>
+                    <thead>
+                        <tr class='bg-danger text-white'>
+                            </>
+                            <th scope='row'>players out of classification</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for name, points, matchcount in ranking_unstable %}
+                        <tr>
+                            <td> {{ name }}</td>
+                            <td> {{ points }} </td>
+                            <td> {{ matchcount }} </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
                 </p>
             </div>
 
             <div class='col fade-table collapse-matches' id='matches'>
                 <h4 class='titleSection''>Matches</h4>
-                <p class='centered'>
+                <p class=' centered'>
                     <!-- #### MATCH #### -->
 
                     {MATCH}
 
-                </p>
+                    </p>
             </div>
 
 
@@ -179,4 +214,5 @@
     <script src='https://unpkg.com/ionicons@4.5.5/dist/ionicons.js'></script>
 
 </body>
+
 </html>
