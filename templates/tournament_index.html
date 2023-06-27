@@ -164,7 +164,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for name, points, matchcount in ranking_stable %}
+                        {% for name, points, matchcount in ranking["stable"] %}
                         <tr class='table-success success'>
                             <td> {{ name }}</td>
                             <td> {{ points }} </td>
@@ -184,7 +184,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for name, points, matchcount in ranking_unstable %}
+                        {% for name, points, matchcount in ranking["unstable"] %}
                         <tr>
                             <td> {{ name }}</td>
                             <td> {{ points }} </td>

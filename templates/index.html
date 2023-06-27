@@ -70,13 +70,12 @@
                 <div class='input-padding' role='group' aria-label='2g'>
 
                     <form action="/create" method="post">
-                        <input type="hidden" name="action" value="create">
                         <div class="input-group input-padding">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Create League</span>
                             </div>
 
-                            <input class="form-control" name="league" placeholder="name">
+                            <input class="form-control" name="league_id" placeholder="name">
 
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary bg-danger text-white bigFontButton"
@@ -94,7 +93,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Show</span>
                             </div>
-                            <select class="custom-select" name="id">
+                            <select class="custom-select" name="league_id">
                                 {% for name in leagues %}
                                     <option value="{{ name }}">{{ name }}</option>
                                 {% endfor %}
