@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang='it'>
+<html lang='en'>
   <head>
     <!-- Required meta tags -->
     <title>{LEAGUE} | Pomelo</title>
@@ -52,8 +52,8 @@
             <h4>Matches</h4><br>
 
             <!-- aggiungi risultato -->
-            <form action="/pomelo/submit.php?torneo={LEAGUE}" method="post">
-                <input type="hidden" name="torneo" value="{LEAGUE}">
+            <form action="/pomelo/submit.php?league={LEAGUE}" method="post">
+                <input type="hidden" name="league" value="{LEAGUE}">
                 <input type="hidden" name="action" value="update">
                 <div class="input-group input-padding">
                     <select class="custom-select" name="player1" required>
@@ -62,7 +62,7 @@
                     </select>
 
                     <div class="input-group-append">
-                        <span class="input-group-text torneo-icon" style="border-right:none;">
+                        <span class="input-group-text league-icon" style="border-right:none;">
                              vs
                             <!-- <ion-icon name="md-swap" size="large"></ion-icon> -->
                         </span>
@@ -88,16 +88,15 @@
             </form>
 
 
-            <br /><h4>PLAYERS e squadre</h4><br>
+            <br /><h4>Players and teams</h4><br>
 
-            <!-- elimina giocatore -->
-            <form action="/pomelo/submit.php?torneo={LEAGUE}" method="post">
+            <form action="/pomelo/submit.php?league={LEAGUE}" method="post">
                 <input type="hidden" name="action" value="delete">
                 <div class="input-group input-padding">
                     <div class="input-group-prepend">
                         <span class="input-group-text">delete</span>
                     </div>
-                    <select class="custom-select" name="giocatore">
+                    <select class="custom-select" name="players">
                         <option value="" disabled selected>Players</option>
                         {PLAYERS}
                     </select>
@@ -111,14 +110,14 @@
             </form>
 
             <!-- aggiungi giocatore -->
-            <form action="/pomelo/submit.php?torneo={LEAGUE}" method="post">
+            <form action="/pomelo/submit.php?league={LEAGUE}" method="post">
                 <input type="hidden" name="action" value="add">
                 <div class="input-group input-padding">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">add</span>
                     </div>
 
-                    <input class="form-control" name="nuovoGiocatore" placeholder="Nome">
+                    <input class="form-control" name="newPlayer" placeholder="Name">
 
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary bg-danger text-white bigFontButton" type="submit">

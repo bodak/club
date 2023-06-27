@@ -93,10 +93,10 @@ body.dark > #title {
 body.dark #menu {
     background: hsl(180, 10%, 7.5%);
 }
-#menu span.torneo-icon {
+#menu span.league-icon {
     padding: 2px 5px;
 }
-#menu span.torneo-icon > ion-icon {
+#menu span.league-icon > ion-icon {
     font-size: 24px;
 }
 
