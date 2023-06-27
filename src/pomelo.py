@@ -5,6 +5,8 @@ import re
 import sys
 import time
 
+import trueskill
+
 data_dir = os.path.dirname("r/")
 
 
@@ -16,8 +18,9 @@ def exportLeague(league):
 def importLeague(league):
     file_path = data_dir + "/" + str(league) + ".json"
     with open(file_path, "r") as file_json:
-        dict_league = json.load(file_json)
-    return dict_league
+        data = json.load(file_json)
+    trueskill.setup(data["trueskill_mu"], data["trueskill_mu"] / 3)
+    return data
 
 
 def createLeague(name):
@@ -27,6 +30,7 @@ def createLeague(name):
         "name": name,
         "path": file_path,
         "n_min_games": 0,
+        "trueskill_mu": 1000,
         "players": {},
         "matches": [],
         "logo": "",
@@ -46,7 +50,7 @@ def addPlayer(league, name):
     if name in data["players"]:
         return "name already in use: choose another name"
 
-    data["players"][name] = {"rank": 1440, "match": 0}
+    data["players"][name] = {"rank": int(trueskill.Rating().mu), "match": 0}
     exportLeague(data)
     return ""
 
@@ -74,6 +78,21 @@ def addScores(league, player1, player1_score, player2, player2_score):
     )
     data["players"][player1]["match"] += 1
     data["players"][player2]["match"] += 1
+
+    winner, loser = (
+        (player1, player2)
+        if player1_score > player2_score
+        else (player2, player1)
+    )
+    draw = player1_score == player2_score
+    winner_rating, loser_rating = trueskill.rate_1vs1(
+        trueskill.Rating(data["players"][winner]["rank"]),
+        trueskill.Rating(data["players"][loser]["rank"]),
+        drawn=draw,
+    )
+    data["players"][winner]["rank"] = int(winner_rating.mu)
+    data["players"][loser]["rank"] = int(loser_rating.mu)
+    print(winner, loser, winner_rating, loser_rating, draw)
     exportLeague(data)
 
 
