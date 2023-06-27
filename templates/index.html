@@ -69,7 +69,7 @@
             <div class='' role='group' aria-label='1g'>
                 <div class='input-padding' role='group' aria-label='2g'>
 
-                    <form action="/static/submit.php" method="post">
+                    <form action="/create" method="post">
                         <input type="hidden" name="action" value="create">
                         <div class="input-group input-padding">
                             <div class="input-group-prepend">
@@ -89,15 +89,15 @@
                 </div>
 
                 <div class='input-padding' role='group' aria-label='2g'>
-                    <form action="/pomelo/submit.php" method="post">
-                        <input type="hidden" name="action" value="goto">
+                    <form action="/league" method="get">
                         <div class="input-group input-padding">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Show</span>
                             </div>
-                            <select class="custom-select" name="league">
-                                <option value="" disabled selected>League</option>
-                                {LEAGUE}
+                            <select class="custom-select" name="id">
+                                {% for name in leagues %}
+                                    <option value="{{ name }}">{{ name }}</option>
+                                {% endfor %}
                             </select>
 
                             <div class="input-group-append">
