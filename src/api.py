@@ -57,13 +57,13 @@ async def league_get(request: Request, league_id: str):
 
 @api.post("/{league_id}/player")
 async def add_player(league_id: str, player: Annotated[str, Form()]):
-    addPlayer(league=league_id, name=player)
+    addPlayer(league_id=league_id, name=player)
     return RedirectResponse(f"/{league_id}", status_code=303)
 
 
 @api.post("/{league_id}/delete_player")
 async def delete_player(league_id: str, player: Annotated[str, Form()]):
-    deletePlayer(league=league_id, name=player)
+    deletePlayer(league_id=league_id, name=player)
     return RedirectResponse(f"/{league_id}", status_code=303)
 
 
