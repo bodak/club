@@ -2,10 +2,10 @@
     display: none;
 }
 
-body { 
-    font-family: 'RalewayRegular'; 
-    font-weight: normal; 
-    font-style: normal; 
+body {
+    font-family: 'RalewayRegular';
+    font-weight: normal;
+    font-style: normal;
     background: #eee;
     margin: 0;
     padding: 0;
@@ -37,7 +37,7 @@ body.dark > #logo {
     box-shadow: 0 10px 25px -10px rgba(0,0,0,.8);
 }
 
-#titolo {
+#title {
     box-shadow: 0 -5px 30px -10px rgba(0,0,0,.4);
     position: fixed;
     width: 100%;
@@ -50,11 +50,11 @@ body.dark > #logo {
     z-index: 10;
     transition: background .3s;
 }
-body.dark > #titolo {
+body.dark > #title {
     box-shadow: 0 -5px 30px 1px rgba(0, 0, 0, 0.45);
     background: hsl(210, 10%, 10%);
 }
-#titolo > h1 {
+#title > h1 {
     position: absolute;
     left: 50%;
     transform: translate(calc(-50% - 0px), calc(-50% - 2px));
@@ -259,7 +259,7 @@ body.dark .input-group-prepend > span {
         margin: 45px 0;
         padding: 50px 0px 5px 0px;
     }
-    /* .collapse-ranking, .collapse-partite {
+    /* .collapse-ranking, .collapse-matches {
         padding: 0 5px;
     } */
     .input-padding {
@@ -276,7 +276,7 @@ body.dark .input-group-prepend > span {
         width: auto !important;
         min-width: 50px !important;
     }
-   
+
     /* fix input a tutto schermo */
     .input-group>.input-group-append>.btn,
     .input-group>.input-group-append>.input-group-text,

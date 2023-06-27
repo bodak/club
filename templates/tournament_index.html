@@ -2,7 +2,7 @@
 <html lang='it'>
   <head>
     <!-- Required meta tags -->
-    <title>{TORNEO} | Pomelo</title>
+    <title>{LEAGUE} | Pomelo</title>
     <meta charset='utf-8'>
 	<meta name='description' content='Pomelo is a self-hosted opensource tournament web-server and local script' />
     <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
@@ -17,7 +17,7 @@
     <!-- iOS Safari -->
     <meta name="apple-mobile-web-app-status-bar-style" content="#ffffff" id="browserColorap">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <meta name='HandheldFriendly' content='true' />
     <meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name='mobile-web-app-capable' content='yes'>
@@ -29,18 +29,18 @@
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>
     <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>
-    
+
     <script src='/pomelo/js/script.js'></script>
-    
+
     <link rel='stylesheet' href='/pomelo/css/main.css' />
   </head>
 
 <body>
-    
+
     <img id='logo' src='{LOGO}' height='90px' width='90px' alt='Logo description' />
-    
-    <span id='titolo'>
-        <h1 id='itolo'>{TORNEO}</h1>
+
+    <span id='title'>
+        <h1 id='title'>{LEAGUE}</h1>
         <a href='#' id="admin_button" class='adminButton'>
             <ion-icon id="admin_icon" size='large' name='add'></ion-icon>
         </a>
@@ -49,36 +49,36 @@
     <center>
         <div id="menu" class="hidden">
 
-            <h4>Partite</h4><br>
+            <h4>Matches</h4><br>
 
             <!-- aggiungi risultato -->
-            <form action="/pomelo/submit.php?torneo={TORNEO}" method="post">
-                <input type="hidden" name="torneo" value="{TORNEO}">
+            <form action="/pomelo/submit.php?torneo={LEAGUE}" method="post">
+                <input type="hidden" name="torneo" value="{LEAGUE}">
                 <input type="hidden" name="action" value="update">
                 <div class="input-group input-padding">
-                    <select class="custom-select" name="giocatore1" required>
-                        <option value="" disabled selected>Giocat. 1</option>
-                        {GIOCATORI}
+                    <select class="custom-select" name="player1" required>
+                        <option value="" disabled selected>Player 1</option>
+                        {PLAYERS}
                     </select>
-                    
+
                     <div class="input-group-append">
                         <span class="input-group-text torneo-icon" style="border-right:none;">
-                             vs 
+                             vs
                             <!-- <ion-icon name="md-swap" size="large"></ion-icon> -->
                         </span>
                     </div>
 
-                    <select class="custom-select" name="giocatore2" required>
-                        <option value="" disabled selected>Giocat. 2</option>
-                        {GIOCATORI}
+                    <select class="custom-select" name="player2" required>
+                        <option value="" disabled selected>Player 2</option>
+                        {PLAYERS}
                     </select>
-                    
+
                     <select class="custom-select col-xs-3 col-md-2" id="inputGroupSelect01" name="esito" required>
-                        <option disabled selected value="">esito</option>
+                        <option disabled selected value="">outcome</option>
                         <option value="1">1</option>
                         <option value="0">2</option>
                     </select>
-                    
+
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary bg-danger text-white bigFontButton" type="submit">
                             <ion-icon size="large" name="md-checkmark"></ion-icon>
@@ -86,20 +86,20 @@
                     </div>
                 </div>
             </form>
-            
 
-            <br /><h4>Giocatori e squadre</h4><br>
-            
+
+            <br /><h4>PLAYERS e squadre</h4><br>
+
             <!-- elimina giocatore -->
-            <form action="/pomelo/submit.php?torneo={TORNEO}" method="post">
+            <form action="/pomelo/submit.php?torneo={LEAGUE}" method="post">
                 <input type="hidden" name="action" value="delete">
                 <div class="input-group input-padding">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">elimina</span>
+                        <span class="input-group-text">delete</span>
                     </div>
                     <select class="custom-select" name="giocatore">
-                        <option value="" disabled selected>Giocatore</option>
-                        {GIOCATORI}
+                        <option value="" disabled selected>Players</option>
+                        {PLAYERS}
                     </select>
 
                     <div class="input-group-append">
@@ -109,17 +109,17 @@
                     </div>
                 </div>
             </form>
-           
+
             <!-- aggiungi giocatore -->
-            <form action="/pomelo/submit.php?torneo={TORNEO}" method="post">
+            <form action="/pomelo/submit.php?torneo={LEAGUE}" method="post">
                 <input type="hidden" name="action" value="add">
                 <div class="input-group input-padding">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">aggiungi</span>
+                        <span class="input-group-text" id="basic-addon1">add</span>
                     </div>
 
                     <input class="form-control" name="nuovoGiocatore" placeholder="Nome">
-                                                       
+
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary bg-danger text-white bigFontButton" type="submit">
                             <ion-icon size="large" name="md-person-add"></ion-icon>
@@ -129,13 +129,13 @@
             </form>
         </div>
     </center>
-    
+
 
     <div id='content' class='container-fluid'>
 
         <center>
             <img id='qr' src='img/qr.png' height='140px' width='140px' alt='qr url' /><br>
-            <caption><small>Usa il codice QR per condividere la pagina!</small></caption><br>
+            <caption><small>Use the QR code to share the page!</small></caption><br>
 
             <br>
             <div class='mr-2' role='group' aria-label='1g'>
@@ -148,30 +148,30 @@
                     </button>
                 </div>
             </div>
-        </center> 
-        
+        </center>
+
         <div class='row'>
-            <div class='col fade-table collapse-ranking' id='ranking'>        
+            <div class='col fade-table collapse-ranking' id='ranking'>
                 <h4 class='titleSection'>Ranking</h4>
                 <p class='centered'>
                     <!-- #### RANKING #### -->
-                    
+
                     {RANKING}
 
                 </p>
             </div>
-            
-            <div class='col fade-table collapse-partite' id='partite'>
-                <h4 class='titleSection''>Partite</h4>
+
+            <div class='col fade-table collapse-matches' id='matches'>
+                <h4 class='titleSection''>Matches</h4>
                 <p class='centered'>
                     <!-- #### MATCH #### -->
-                    
+
                     {MATCH}
 
                 </p>
             </div>
-            
-            
+
+
         </div>
 
     </div>
