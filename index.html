@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang='it'>
+  <head>
+    <!-- Required meta tags -->
+    <title>Pomelo</title>
+    <meta charset='utf-8'>
+	<meta name='description' content='Pomelo is a self-hosted opensource tournament web-server and local script' />
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/raleway' type='text/css'/>
+    <link rel='icon' href='/pomelo/img/favicon.png'>
+
+    <!-- Colors and bars -->
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#ffffff" id="browserColor">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#ffffff" id="browserColorwp">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#ffffff" id="browserColorap">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <meta name='HandheldFriendly' content='true' />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name='mobile-web-app-capable' content='yes'>
+
+    <!-- bootstrap -->
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>
+    <!-- <script src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>
+    <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>
+    
+    <script src='/pomelo/js/script.js'></script>
+    
+    <link rel='stylesheet' href='/pomelo/css/main.css' />
+  </head>
+
+<body>
+    
+    <img id='logo' src='img/pomelo.png' height='90px' width='90px' alt='Logo description' />
+    
+    <span id='titolo'>
+        <h1 id='itolo'></h1>
+        <!-- <a href='admin.php' class='adminButton'> -->
+        <!-- <a href='#' onclick="$('#menu').collapse('toggle')" class='adminButton'> -->
+        <!-- <a href='#' id="admin_button" class='adminButton'>
+            <ion-icon id="admin_icon" size='large' name='add'></ion-icon>
+        </a> -->
+    </span>
+
+    <center>
+        <div id="menu" class="hidden">
+
+            <h4>Menu</h4><br>
+
+        </div>
+    </center>
+    
+
+    <div id='content' class='container-fluid'>
+
+        <center>
+            <h3>Benvenuto su Pomelo!</h3><br>
+            <img id='logo_pomelo' src='img/pomelo.png' height='140px' width='140px' alt='logo' /><br>
+
+            <br>
+            <br>
+            
+            <div class='' role='group' aria-label='1g'>
+                <div class='input-padding' role='group' aria-label='2g'>
+                    
+                    <form action="/pomelo/submit.php" method="post">
+                        <input type="hidden" name="action" value="create">
+                        <div class="input-group input-padding">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Crea torneo</span>
+                            </div>
+                            
+                            <input class="form-control" name="torneo" placeholder="Nome">
+                            
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary bg-danger text-white bigFontButton"
+                                    type="submit">
+                                    <ion-icon size="large" name="md-add"></ion-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class='input-padding' role='group' aria-label='2g'>
+                    <form action="/pomelo/submit.php" method="post">
+                        <input type="hidden" name="action" value="goto">
+                        <div class="input-group input-padding">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Mostra</span>
+                            </div>
+                            <select class="custom-select" name="torneo">
+                                <option value="" disabled selected>Torneo</option>
+                                <option value='doppio19'>doppio19</option>
+<option value='singolo19'>singolo19</option>
+<option value='test'>test</option>
+
+                            </select>
+                            
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary bg-danger text-white bigFontButton" type="submit">
+                                    <ion-icon size="large" name="md-arrow-round-forward"></ion-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </center> 
+        
+    </div>
+
+    <!-- ion-icons -->
+    <script src='https://unpkg.com/ionicons@4.5.5/dist/ionicons.js'></script>
+
+</body>
+</html>
