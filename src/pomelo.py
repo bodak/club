@@ -173,7 +173,15 @@ def updateLeague(league, player1, player2, result):
                 )
 
     now = time.localtime()
-    dataora = str(now[3]) + ":" + str(now[4]) + " - " + str(now[2]) + "/" + str(now[1])
+    dataora = (
+        str(now[3])
+        + ":"
+        + str(now[4])
+        + " - "
+        + str(now[2])
+        + "/"
+        + str(now[1])
+    )
 
     updateRanking(league)
     league["MATCHES"].append((player1, player2, result, "(" + dataora + ")"))
@@ -211,7 +219,9 @@ def updateRanking(league):
 
             classification.append((name, rank, match, stabile))
             classification = sorted(
-                classification, key=lambda player: (player[1], player[2]), reverse=True
+                classification,
+                key=lambda player: (player[1], player[2]),
+                reverse=True,
             )
 
     league["RANKING"] = classification
@@ -388,149 +398,162 @@ ERR_INPUT = "INCORRECT INPUT! Enter only alphanumeric characters and spaces\n"
 ######################################################################################################################################################
 
 
-if len(sys.argv) > 1:
-    args = {"option": [], "arguments": []}
-    for arg in sys.argv[1:]:
-        parsed = parse(arg)
+def main():
+    if len(sys.argv) > 1:
+        args = {"option": [], "arguments": []}
+        for arg in sys.argv[1:]:
+            parsed = parse(arg)
 
-        if parsed[1] == "argument":
-            args["arguments"].append(parsed[0])
-        elif parsed[1] == "option":
-            args["option"].append(parsed[0])
+            if parsed[1] == "argument":
+                args["arguments"].append(parsed[0])
+            elif parsed[1] == "option":
+                args["option"].append(parsed[0])
 
-    if args["option"] == "-l" or args["option"] == "--list":
-        listLeagues("stout")
+        if args["option"] == "-l" or args["option"] == "--list":
+            listLeagues("stout")
 
-    elif args["option"] == "-h" or args["option"] == "--help":
+        elif args["option"] == "-h" or args["option"] == "--help":
+            print(HELP)
+
+        else:
+            if len(args["arguments"]):
+                league_arg = args["arguments"][0]
+                option_arg = args["option"][0]
+
+                if option_arg == "-n" or option_arg == "--new":
+                    createleague = createLeague(league_arg)
+                    league = {league_arg: createleague}
+
+                    if createleague:
+                        print("league created, follow the help to populate it")
+
+                elif option_arg == "--gen-index":
+                    buildHtml(league_arg)
+
+                elif option_arg == "-i" or option_arg == "--import":
+                    league = importLeague(league_arg)
+                    league = {league["name"]: league}
+
+                elif option_arg == "-p" or option_arg == "--print":
+                    league = importLeague(league_arg)
+                    printFormatted(league)
+
+                elif option_arg == "-a" or option_arg == "--add":
+                    league = importLeague(league_arg)
+
+                    if len(args["arguments"]) > 1:
+                        player = args["arguments"][1]
+                        addPlayer(league, player)
+                    else:
+                        print("Player name is missing!")
+
+                elif option_arg == "-d" or option_arg == "--delete":
+                    league = importLeague(league_arg)
+
+                    if len(args["arguments"]) > 1:
+                        player = args["arguments"][1]
+
+                        deletePlayer(league, player)
+
+                    else:
+                        print("Player name is missing!")
+
+                elif option_arg == "-u" or option_arg == "--update":
+                    league = importLeague(league_arg)
+
+                    if len(args["arguments"]) > 3:
+                        player1 = args["arguments"][1]
+                        player2 = args["arguments"][2]
+                        outcome_match = float(
+                            args["arguments"][3]
+                        )  # [0, 0.5, 1]
+
+                        updateLeague(league, player1, player2, outcome_match)
+
+                    else:
+                        print(
+                            "Something is missing! Enter player1 player2 Result"
+                        )
+
+                elif option_arg == "-r" or option_arg == "--ranking":
+                    league = importLeague(league_arg)
+
+                    ranking = rankingStable(league)
+
+                    omitted_characters = ",'[(]"
+                    replaced_characters = ")"
+
+                    if any("--html" in o for o in args["option"]):
+                        print(rankingHtml(league))
+
+                    else:
+                        ranking_str = " " + str(ranking["stable"])
+
+                        if len(ranking["unstable"]):
+                            ranking_str += "\n== Match < 6 ==\n " + str(
+                                ranking["unstable"]
+                            )
+
+                        for char in omitted_characters:
+                            ranking_str = ranking_str.replace(char, "")
+
+                        ranking_str = ranking_str.replace(
+                            replaced_characters, "\n"
+                        )
+
+                        print(ranking_str)
+
+                elif option_arg == "-g" or option_arg == "--PLAYERS":
+                    league = importLeague(league_arg)
+
+                    if any("--html" in o for o in args["option"]):
+                        print(selectPlayersHtml(league))
+
+                    else:
+                        PLAYERS = str(selectPlayers(league))
+                        omitted_characters = "'[(])"
+                        replaced_characters = ", "
+
+                        for char in omitted_characters:
+                            PLAYERS = PLAYERS.replace(char, "")
+
+                        PLAYERS = PLAYERS.replace(replaced_characters, "\n")
+                        print(PLAYERS)
+
+                elif option_arg == "-m" or option_arg == "--match":
+                    league = importLeague(league_arg)
+                    matches = league["MATCHES"]
+
+                    if any("--html" in o for o in args["option"]):
+                        print(matchHtml(league))
+
+                    else:
+                        matches = " " + str(matches)
+
+                        matches = matches.replace("[", "")
+                        matches = matches.replace("],", "\n")
+                        matches = matches.replace(", 0.0", ": 2")
+                        matches = matches.replace(", 0.5", ": X")
+                        matches = matches.replace(", 1.0", ": 1")
+                        matches = matches.replace("1,", "1")
+                        matches = matches.replace("X,", "X")
+                        matches = matches.replace("2,", "2")
+                        matches = matches.replace(", ", " - ")
+                        # matches = matches.replace('- (', ' ')
+
+                        omitted_characters = "[]',"
+                        for char in omitted_characters:
+                            matches = matches.replace(char, "")
+
+                        print(matches)
+
+                else:
+                    print(HELP)
+            else:
+                print("League name is missing!")
+    else:
         print(HELP)
 
-    else:
-        if len(args["arguments"]):
-            league_arg = args["arguments"][0]
-            option_arg = args["option"][0]
 
-            if option_arg == "-n" or option_arg == "--new":
-                createLeague = createLeague(league_arg)
-                league = {league_arg: createLeague}
-
-                if createLeague:
-                    print("league created, follow the help to populate it")
-
-            elif option_arg == "--gen-index":
-                buildHtml(league_arg)
-
-            elif option_arg == "-i" or option_arg == "--import":
-                league = importLeague(league_arg)
-                league = {league["name"]: league}
-
-            elif option_arg == "-p" or option_arg == "--print":
-                league = importLeague(league_arg)
-                printFormatted(league)
-
-            elif option_arg == "-a" or option_arg == "--add":
-                league = importLeague(league_arg)
-
-                if len(args["arguments"]) > 1:
-                    player = args["arguments"][1]
-                    addPlayer(league, player)
-                else:
-                    print("Player name is missing!")
-
-            elif option_arg == "-d" or option_arg == "--delete":
-                league = importLeague(league_arg)
-
-                if len(args["arguments"]) > 1:
-                    player = args["arguments"][1]
-
-                    deletePlayer(league, player)
-
-                else:
-                    print("Player name is missing!")
-
-            elif option_arg == "-u" or option_arg == "--update":
-                league = importLeague(league_arg)
-
-                if len(args["arguments"]) > 3:
-                    player1 = args["arguments"][1]
-                    player2 = args["arguments"][2]
-                    outcome_match = float(args["arguments"][3])  # [0, 0.5, 1]
-
-                    updateLeague(league, player1, player2, outcome_match)
-
-                else:
-                    print("Something is missing! Enter player1 player2 Result")
-
-            elif option_arg == "-r" or option_arg == "--ranking":
-                league = importLeague(league_arg)
-
-                ranking = rankingStable(league)
-
-                omitted_characters = ",'[(]"
-                replaced_characters = ")"
-
-                if any("--html" in o for o in args["option"]):
-                    print(rankingHtml(league))
-
-                else:
-                    ranking_str = " " + str(ranking["stable"])
-
-                    if len(ranking["unstable"]):
-                        ranking_str += "\n== Match < 6 ==\n " + str(ranking["unstable"])
-
-                    for char in omitted_characters:
-                        ranking_str = ranking_str.replace(char, "")
-
-                    ranking_str = ranking_str.replace(replaced_characters, "\n")
-
-                    print(ranking_str)
-
-            elif option_arg == "-g" or option_arg == "--PLAYERS":
-                league = importLeague(league_arg)
-
-                if any("--html" in o for o in args["option"]):
-                    print(selectPlayersHtml(league))
-
-                else:
-                    PLAYERS = str(selectPlayers(league))
-                    omitted_characters = "'[(])"
-                    replaced_characters = ", "
-
-                    for char in omitted_characters:
-                        PLAYERS = PLAYERS.replace(char, "")
-
-                    PLAYERS = PLAYERS.replace(replaced_characters, "\n")
-                    print(PLAYERS)
-
-            elif option_arg == "-m" or option_arg == "--match":
-                league = importLeague(league_arg)
-                matches = league["MATCHES"]
-
-                if any("--html" in o for o in args["option"]):
-                    print(matchHtml(league))
-
-                else:
-                    matches = " " + str(matches)
-
-                    matches = matches.replace("[", "")
-                    matches = matches.replace("],", "\n")
-                    matches = matches.replace(", 0.0", ": 2")
-                    matches = matches.replace(", 0.5", ": X")
-                    matches = matches.replace(", 1.0", ": 1")
-                    matches = matches.replace("1,", "1")
-                    matches = matches.replace("X,", "X")
-                    matches = matches.replace("2,", "2")
-                    matches = matches.replace(", ", " - ")
-                    # matches = matches.replace('- (', ' ')
-
-                    omitted_characters = "[]',"
-                    for char in omitted_characters:
-                        matches = matches.replace(char, "")
-
-                    print(matches)
-
-            else:
-                print(HELP)
-        else:
-            print("League name is missing!")
-else:
-    print(HELP)
+if __name__ == "__main__":
+    main()
