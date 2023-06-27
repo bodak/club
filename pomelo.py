@@ -299,7 +299,7 @@ def buildHtml(league_in):
 
     elif(league_in == 'index'):
         index_template = open('templates/index.html', 'r')
-        new_index = open('index.html', 'w')
+        new_index = open(f"{data_dir}/index.html", 'w')
         league = listLeagues('html')
 
         new_index_content = index_template.read().format(LEAGUE=league)
