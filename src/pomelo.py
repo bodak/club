@@ -72,6 +72,8 @@ def addScores(league, player1, player1_score, player2, player2_score):
     data["matches"].append(
         (player1, player1_score, player2, player2_score, "(" + datetime + ")")
     )
+    data["players"][player1]["match"] += 1
+    data["players"][player2]["match"] += 1
     exportLeague(data)
 
 
