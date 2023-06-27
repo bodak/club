@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import json
 import math
 import os
@@ -11,17 +9,14 @@ data_dir = os.path.dirname("r/")
 
 
 def exportLeague(league):
-    with open(league["JSON_DATA"], "w") as file_json:
-        json.dump(league, file_json)
+    with open(league["path"], "w") as file_json:
+        json.dump(league, file_json, indent=2)
 
 
 def importLeague(league):
     file_path = data_dir + "/" + str(league) + ".json"
     with open(file_path, "r") as file_json:
         dict_league = json.load(file_json)
-
-    updateRanking(dict_league)
-
     return dict_league
 
 
@@ -30,11 +25,11 @@ def createLeague(name):
 
     league = {
         "name": name,
-        "JSON_DATA": file_path,
-        "PLAYERS": {},
-        "MATCHES": [],
-        "RANKING": [],
-        "LOGO": "",
+        "path": file_path,
+        "n_min_games": 0,
+        "players": {},
+        "matches": [],
+        "logo": "",
     }
 
     if not os.path.exists(file_path):
@@ -47,39 +42,31 @@ def createLeague(name):
 
 
 def addPlayer(league, name):
-    for id in range(len(league["PLAYERS"])):
-        if league["PLAYERS"][str(id)]["name"] == name:
-            print("name already in use: choose another name")
-            return league
+    data = importLeague(league)
+    if name in data["players"]:
+        return "name already in use: choose another name"
 
-    newID = league["name"] + "_" + str(len(league["PLAYERS"]))
-    newPlayer = {"name": name, "ID": newID, "RANK": 1440, "MATCH": 0}
-
-    league["PLAYERS"][str(len(league["PLAYERS"]))] = newPlayer
-    exportLeague(league)
-    return league
+    data["players"][name] = {"rank": 1440, "match": 0}
+    exportLeague(data)
+    return ""
 
 
 def deletePlayer(league, name):
-    for id in range(len(league["PLAYERS"])):
-        if league["PLAYERS"][str(id)]["name"] == name:
-            league["PLAYERS"][str(id)]["name"] = "ND"
-            league["PLAYERS"][str(id)]["RANK"] = -9999
-            league["PLAYERS"][str(id)]["MATCH"] = -1
-
-    exportLeague(league)
+    data = importLeague(league)
+    del data["players"][name]
+    exportLeague(data)
 
 
 def addScores(league, player1, player2, result):
-    for id in range(len(league["PLAYERS"])):
-        if league["PLAYERS"][str(id)]["name"] == player1:
-            score1 = int(league["PLAYERS"][str(id)]["RANK"])
-            matchX = int(league["PLAYERS"][str(id)]["MATCH"])
+    for id in range(len(league["players"])):
+        if league["players"][str(id)]["name"] == player1:
+            score1 = int(league["players"][str(id)]["rank"])
+            matchX = int(league["players"][str(id)]["match"])
 
-    for id in range(len(league["PLAYERS"])):
-        if league["PLAYERS"][str(id)]["name"] == player2:
-            score2 = int(league["PLAYERS"][str(id)]["RANK"])
-            matchY = int(league["PLAYERS"][str(id)]["MATCH"])
+    for id in range(len(league["players"])):
+        if league["players"][str(id)]["name"] == player2:
+            score2 = int(league["players"][str(id)]["rank"])
+            matchY = int(league["players"][str(id)]["match"])
 
     result2 = 1 - result
 
@@ -118,16 +105,16 @@ def updateLeague(league, player1, player2, result):
         return
 
     found1 = False
-    for id in range(len(league["PLAYERS"])):
-        if league["PLAYERS"][str(id)]["name"] == player1:
+    for id in range(len(league["players"])):
+        if league["players"][str(id)]["name"] == player1:
             found1 = True
     if not found1:
         print("PlayerX not present in the league")
         return
 
     found2 = False
-    for id in range(len(league["PLAYERS"])):
-        if league["PLAYERS"][str(id)]["name"] == player2:
+    for id in range(len(league["players"])):
+        if league["players"][str(id)]["name"] == player2:
             found2 = True
     if not found2:
         print("PlayerY not present in the league")
@@ -136,18 +123,18 @@ def updateLeague(league, player1, player2, result):
     else:
         [newscore1, newscore2] = addScores(league, player1, player2, result)
 
-        for id in range(len(league["PLAYERS"])):
-            if league["PLAYERS"][str(id)]["name"] == player1:
-                league["PLAYERS"][str(id)]["RANK"] = newscore1
-                league["PLAYERS"][str(id)]["MATCH"] = (
-                    league["PLAYERS"][str(id)]["MATCH"] + 1
+        for id in range(len(league["players"])):
+            if league["players"][str(id)]["name"] == player1:
+                league["players"][str(id)]["rank"] = newscore1
+                league["players"][str(id)]["match"] = (
+                    league["players"][str(id)]["match"] + 1
                 )
 
-        for id in range(len(league["PLAYERS"])):
-            if league["PLAYERS"][str(id)]["name"] == player2:
-                league["PLAYERS"][str(id)]["RANK"] = newscore2
-                league["PLAYERS"][str(id)]["MATCH"] = (
-                    league["PLAYERS"][str(id)]["MATCH"] + 1
+        for id in range(len(league["players"])):
+            if league["players"][str(id)]["name"] == player2:
+                league["players"][str(id)]["rank"] = newscore2
+                league["players"][str(id)]["match"] = (
+                    league["players"][str(id)]["match"] + 1
                 )
 
     now = time.localtime()
@@ -162,7 +149,7 @@ def updateLeague(league, player1, player2, result):
     )
 
     updateRanking(league)
-    league["MATCHES"].append((player1, player2, result, "(" + dataora + ")"))
+    league["matches"].append((player1, player2, result, "(" + dataora + ")"))
 
     return exportLeague(league)
 
@@ -183,13 +170,12 @@ def printFormatted(league):
 def updateRanking(league):
     classification = []
 
-    for i in league["PLAYERS"]:
-        if league["PLAYERS"][i]["RANK"] > 0:  # rank non negativi
-            name = league["PLAYERS"][i]["name"]
-            rank = league["PLAYERS"][i]["RANK"]
-            match = league["PLAYERS"][i]["MATCH"]
+    for name in league["players"].keys():
+        if league["players"][name]["rank"] > 0:  # rank non negativi
+            rank = league["players"][name]["rank"]
+            match = league["players"][name]["match"]
 
-            if league["PLAYERS"][i]["MATCH"] > 5:
+            if league["players"][name]["match"] > 5:
                 stabile = True
 
             else:
@@ -202,37 +188,34 @@ def updateRanking(league):
                 reverse=True,
             )
 
-    league["RANKING"] = classification
+    league["ranking"] = classification
 
 
-def rankingStable(league):
+def leagueRanking(league):
+    data = importLeague(league)
     ranking = {"stable": [], "unstable": []}
 
-    if league["name"] == "singolo":
-        ranking["n_min_games"] = 16
-    else:
-        ranking["n_min_games"] = 8
-
-    for player in league["RANKING"]:
-        if player[-1]:
-            ranking["stable"].append(player[0:3])
+    for name, values in data["players"].items():
+        if values["match"] >= data["n_min_games"]:
+            ranking["stable"].append((name, values["rank"], values["match"]))
         else:
-            ranking["unstable"].append(player[0:3])
-
+            ranking["unstable"].append((name, values["rank"], values["match"]))
+    ranking["stable"] = sorted(
+        ranking["stable"],
+        key=lambda player: (player[1], player[2]),
+        reverse=True,
+    )
+    ranking["unstable"] = sorted(
+        ranking["unstable"],
+        key=lambda player: (player[1], player[2]),
+        reverse=True,
+    )
     return ranking
 
 
 def selectPlayers(league):
-    # league = importLeague(league)
-    PLAYERS = []
-
-    for gid in league["PLAYERS"]:
-        PLAYERS.append(league["PLAYERS"][gid]["name"])
-        # print(gid, PLAYERS)
-
-    PLAYERS.sort()
-
-    return PLAYERS
+    data = importLeague(league)
+    return sorted(data["players"].keys())
 
 
 def selectPlayersHtml(league):
@@ -244,41 +227,9 @@ def selectPlayersHtml(league):
     return select
 
 
-def rankingHtml(league):
-    rankingTable = "<table class = 'table table-sm text-center table-bordered table-striped' ><thead class=''><tr><th scope='col'>player</th><th scope='col'>Points</th><th scope='col'>Match</th></tr></thead><tbody>\n"
-
-    league_rank = rankingStable(league)
-
-    for player in league_rank["stable"]:
-        if league_rank["stable"].index(player) < league_rank["n_min_games"]:
-            classColor = "table-success success"
-        else:
-            classColor = ""
-
-        rankingTable += "<tr class='" + classColor + "'>\n"
-        rankingTable += "    <td>" + str(player[0]) + "</td>\n"
-        rankingTable += "    <td>" + str(player[1]) + "</td>\n"
-        rankingTable += "    <td>" + str(player[2]) + "</td>\n"
-        rankingTable += "</tr>\n"
-
-    if len(league_rank["unstable"]):
-        rankingunstableTable = "<table class = 'table table-sm text-center table-bordered table-striped' ><thead><tr class='bg-danger text-white'></><th scope='row'>PLAYERS out of classification</th><th></th><th></th></tr></thead><tbody>\n"
-
-        for player in league_rank["unstable"]:
-            rankingunstableTable += "<tr>\n"
-            rankingunstableTable += "    <td>" + str(player[0]) + "</td>\n"
-            rankingunstableTable += "    <td>" + str(player[1]) + "</td>\n"
-            rankingunstableTable += "    <td>" + str(player[2]) + "</td>\n"
-            rankingunstableTable += "</tr>\n"
-
-        rankingunstableTable += "</table>\n"
-
-        return rankingTable + rankingunstableTable
-
-
 def matchHtml(league):
-    match = league["MATCHES"][::-1]
-    matchTable = "<table class = 'table table-sm text-center table-bordered table-striped' ><thead class=''><tr><th scope='col'>PLAYERS<th scope='col'></th><th scope='col'>Outcome</th><th scope='col'>Data</th></tr></thead><tbody>\n"
+    match = league["matches"][::-1]
+    matchTable = "<table class = 'table table-sm text-center table-bordered table-striped' ><thead class=''><tr><th scope='col'>players<th scope='col'></th><th scope='col'>Outcome</th><th scope='col'>Data</th></tr></thead><tbody>\n"
 
     for match in match:
         matchTable += "<tr>\n"
@@ -398,7 +349,7 @@ def main():
                     replaced_characters = ")"
 
                     if any("--html" in o for o in args["option"]):
-                        print(rankingHtml(league))
+                        pass
 
                     else:
                         ranking_str = " " + str(ranking["stable"])
@@ -417,26 +368,26 @@ def main():
 
                         print(ranking_str)
 
-                elif option_arg == "-g" or option_arg == "--PLAYERS":
+                elif option_arg == "-g" or option_arg == "--players":
                     league = importLeague(league_arg)
 
                     if any("--html" in o for o in args["option"]):
                         print(selectPlayersHtml(league))
 
                     else:
-                        PLAYERS = str(selectPlayers(league))
+                        players = str(selectPlayers(league))
                         omitted_characters = "'[(])"
                         replaced_characters = ", "
 
                         for char in omitted_characters:
-                            PLAYERS = PLAYERS.replace(char, "")
+                            players = players.replace(char, "")
 
-                        PLAYERS = PLAYERS.replace(replaced_characters, "\n")
-                        print(PLAYERS)
+                        players = players.replace(replaced_characters, "\n")
+                        print(players)
 
                 elif option_arg == "-m" or option_arg == "--match":
                     league = importLeague(league_arg)
-                    matches = league["MATCHES"]
+                    matches = league["matches"]
 
                     if any("--html" in o for o in args["option"]):
                         print(matchHtml(league))
