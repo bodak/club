@@ -7,7 +7,7 @@
 	<meta name='description' content='Pomelo is a self-hosted opensource tournament web-server and local script' />
     <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
     <link rel='stylesheet' media='screen' href='https://fontlibrary.org/face/raleway' type='text/css'/>
-    <link rel='icon' href='/pomelo/img/favicon.png'>
+    <link rel='icon' href='/static/img/favicon.png'>
 
     <!-- Colors and bars -->
     <!-- Chrome, Firefox OS and Opera -->
@@ -30,14 +30,14 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>
     <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>
 
-    <script src='/pomelo/js/script.js'></script>
+    <script src='/static/js/script.js'></script>
 
-    <link rel='stylesheet' href='/pomelo/css/main.css' />
+    <link rel='stylesheet' href='/static/css/main.css' />
   </head>
 
 <body>
 
-    <img id='logo' src='img/pomelo.png' height='90px' width='90px' alt='Logo description' />
+    <img id='logo' src='/static/img/pomelo.png' height='90px' width='90px' alt='Logo description' />
 
     <span id='title'>
         <h1 id='title'></h1>
@@ -61,7 +61,7 @@
 
         <center>
             <h3>Welcome to Pomelo!</h3><br>
-            <img id='logo_pomelo' src='img/pomelo.png' height='140px' width='140px' alt='logo' /><br>
+            <img id='logo_pomelo' src='/static/img/pomelo.png' height='140px' width='140px' alt='logo' /><br>
 
             <br>
             <br>
@@ -69,7 +69,7 @@
             <div class='' role='group' aria-label='1g'>
                 <div class='input-padding' role='group' aria-label='2g'>
 
-                    <form action="/pomelo/submit.php" method="post">
+                    <form action="/static/submit.php" method="post">
                         <input type="hidden" name="action" value="create">
                         <div class="input-group input-padding">
                             <div class="input-group-prepend">
