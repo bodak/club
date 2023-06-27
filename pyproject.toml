@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools ~= 65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "club"
+version = "0.0.1"
+readme = "README.md"
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+
+[project.scripts]
+pomelo = "pomelo:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.black]
+line-length = 80
