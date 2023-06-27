@@ -57,13 +57,15 @@
 
             <h4>Matches</h4><br>
 
-            <form action="/static/submit.php?league={LEAGUE}" method="post">
-                <input type="hidden" name="league" value="{LEAGUE}">
-                <input type="hidden" name="action" value="update">
+            <form action="{{ league }}/score" method="post">
                 <div class="input-group input-padding">
+                    <input class="form-control" name="player1_score" placeholder="0" required>
+
                     <select class="custom-select" name="player1" required>
                         <option value="" disabled selected>Player 1</option>
-                        {PLAYERS}
+                        {% for player in players %}
+                        <option value='{{ player }}'>{{ player }}</option>
+                        {% endfor %}
                     </select>
 
                     <div class="input-group-append">
@@ -75,14 +77,12 @@
 
                     <select class="custom-select" name="player2" required>
                         <option value="" disabled selected>Player 2</option>
-                        {PLAYERS}
+                        {% for player in players %}
+                        <option value='{{ player }}'>{{ player }}</option>
+                        {% endfor %}
                     </select>
 
-                    <select class="custom-select col-xs-3 col-md-2" id="inputGroupSelect01" name="esito" required>
-                        <option disabled selected value="">outcome</option>
-                        <option value="1">1</option>
-                        <option value="0">2</option>
-                    </select>
+                    <input class="form-control" name="player2_score" placeholder="0" required>
 
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary bg-danger text-white bigFontButton" type="submit">
@@ -102,8 +102,9 @@
                         <span class="input-group-text">delete</span>
                     </div>
                     <select class="custom-select" name="player">
+                        <option value="" disabled selected>Player to remove</option>
                         {% for player in players %}
-                            <option value='{{ player }}'>{{ player }}</option>
+                        <option value='{{ player }}'>{{ player }}</option>
                         {% endfor %}
                     </select>
 
@@ -198,10 +199,29 @@
             <div class='col fade-table collapse-matches' id='matches'>
                 <h4 class='titleSection''>Matches</h4>
                 <p class=' centered'>
-                    <!-- #### MATCH #### -->
+                    <table class='table table-sm text-center table-bordered table-striped'>
+                        <thead class=''>
+                            <tr>
+                                <th scope='col'>P1</th>
+                                <th scope='col'>P1 Score</th>
+                                <th scope='col'>P2 Score</th>
+                                <th scope='col'>P2</th>
+                                <th scope='col'>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p1, p1_score, p2_score, p2, date in matches %}
+                            <tr>
+                                <td>{{ p1 }}</td>
+                                <td>{{ p1_score }}</td>
+                                <td>{{ p2_score }}</td>
+                                <td>{{ p2 }}</td>
+                                <td>{{ date }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
 
-                    {MATCH}
-
+                    </table>
                     </p>
             </div>
 

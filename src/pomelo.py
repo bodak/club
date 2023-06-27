@@ -57,42 +57,22 @@ def deletePlayer(league, name):
     exportLeague(data)
 
 
-def addScores(league, player1, player2, result):
-    for id in range(len(league["players"])):
-        if league["players"][str(id)]["name"] == player1:
-            score1 = int(league["players"][str(id)]["rank"])
-            matchX = int(league["players"][str(id)]["match"])
-
-    for id in range(len(league["players"])):
-        if league["players"][str(id)]["name"] == player2:
-            score2 = int(league["players"][str(id)]["rank"])
-            matchY = int(league["players"][str(id)]["match"])
-
-    result2 = 1 - result
-
-    expected1 = 1 / 2 + (math.atan((score1 - score2) / 200)) / math.pi
-    expected2 = 1 - expected1
-
-    if matchX > 9 and score1 > 1569:
-        coefficientX = 10
-    elif matchX < 6:
-        coefficientX = 40
-    else:
-        coefficientX = 20
-    if matchY > 9 and score2 > 1569:
-        coefficientY = 10
-    elif matchY < 6:
-        coefficientY = 40
-    else:
-        coefficientY = 20
-
-    partialX = round((result - expected1) * coefficientX)
-    partialY = round((result2 - expected2) * coefficientY)
-
-    score1 = score1 + partialX
-    score2 = score2 + partialY
-
-    return [score1, score2]
+def addScores(league, player1, player1_score, player2, player2_score):
+    data = importLeague(league)
+    now = time.localtime()
+    datetime = (
+        str(now[3])
+        + ":"
+        + str(now[4])
+        + " - "
+        + str(now[2])
+        + "/"
+        + str(now[1])
+    )
+    data["matches"].append(
+        (player1, player1_score, player2, player2_score, "(" + datetime + ")")
+    )
+    exportLeague(data)
 
 
 def updateLeague(league, player1, player2, result):
@@ -227,20 +207,10 @@ def selectPlayersHtml(league):
     return select
 
 
-def matchHtml(league):
-    match = league["matches"][::-1]
-    matchTable = "<table class = 'table table-sm text-center table-bordered table-striped' ><thead class=''><tr><th scope='col'>players<th scope='col'></th><th scope='col'>Outcome</th><th scope='col'>Data</th></tr></thead><tbody>\n"
-
-    for match in match:
-        matchTable += "<tr>\n"
-        matchTable += "    <td>" + str(match[0]) + "</td>\n"
-        matchTable += "    <td>" + str(match[1]) + "</td>\n"
-        matchTable += "    <td>" + str(2 - int(match[2])) + "</td>\n"
-        matchTable += "    <td>" + str(match[3])[1:-1] + "</td>\n"
-        matchTable += "</tr>\n"
-
-    matchTable += "</table>"
-    return matchTable
+def leagueMatches(league):
+    data = importLeague(league)
+    matches = [(m[0], m[1], m[3], m[2], m[4]) for m in data["matches"]]
+    return matches
 
 
 def listLeagues(out="none"):
@@ -388,29 +358,6 @@ def main():
                 elif option_arg == "-m" or option_arg == "--match":
                     league = importLeague(league_arg)
                     matches = league["matches"]
-
-                    if any("--html" in o for o in args["option"]):
-                        print(matchHtml(league))
-
-                    else:
-                        matches = " " + str(matches)
-
-                        matches = matches.replace("[", "")
-                        matches = matches.replace("],", "\n")
-                        matches = matches.replace(", 0.0", ": 2")
-                        matches = matches.replace(", 0.5", ": X")
-                        matches = matches.replace(", 1.0", ": 1")
-                        matches = matches.replace("1,", "1")
-                        matches = matches.replace("X,", "X")
-                        matches = matches.replace("2,", "2")
-                        matches = matches.replace(", ", " - ")
-                        # matches = matches.replace('- (', ' ')
-
-                        omitted_characters = "[]',"
-                        for char in omitted_characters:
-                            matches = matches.replace(char, "")
-
-                        print(matches)
 
                 else:
                     print(HELP)
