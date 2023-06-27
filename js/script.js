@@ -6,13 +6,13 @@ function toggleTheme() {
     $('table').toggleClass('table-dark');
     $('tr.success').toggleClass('bg-success');
     $('tr.success').toggleClass('table-success');
-    
+
     // browser color
     if($('body').hasClass('dark'))
         color = '#17191c';
     else
         color = '#ffffff';
-    
+
     $('#browserColor').attr('content', color);
     $('#browserColorwp').attr('content', color);
     $('#browserColorap').attr('content', color);
@@ -38,19 +38,19 @@ window.onload = function () {
     if (hour < 7 | hour > 18) {
         toggleTheme();
         console.log('auto-enabling dark mode...')
-    } else 
+    } else
         if (urlVars["night"]) {
             toggleTheme();
             console.log('URL var detected: enabling dark mode...')
-        } 
-    
+        }
+
     /////////// BINDING ///////////////////////////
     // theme / logo
     $('#logo').bind('click', function(){
         toggleTheme();
         console.log('Logo clicked, changing theme...')
     });
-    
+
     // open menu
     $('#admin_button').bind('click', function(){
         $('#menu').slideToggle();
@@ -68,7 +68,7 @@ window.onload = function () {
 
 
     // select torneo
-    
+
     $('#buttonRanking').bind('click', function() {
         $(this).toggleClass('active');
         $('#ranking').slideToggle();
@@ -76,11 +76,11 @@ window.onload = function () {
         // $('#ranking').toggleClass('');
         console.log('Toggle ranking table...');
     });
-    
+
     $('#buttonMatches').bind('click', function() {
         $(this).toggleClass('active');
-        $('#partite').slideToggle();
-        // $('#partite').fadeToggle();
+        $('#matches').slideToggle();
+        // $('#matches').fadeToggle();
         console.log('Toggle matches table...');
     });
 }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang='it'>
+<html lang='en'>
   <head>
     <!-- Required meta tags -->
     <title>Pomelo</title>
@@ -17,7 +17,7 @@
     <!-- iOS Safari -->
     <meta name="apple-mobile-web-app-status-bar-style" content="#ffffff" id="browserColorap">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <meta name='HandheldFriendly' content='true' />
     <meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name='mobile-web-app-capable' content='yes'>
@@ -29,18 +29,18 @@
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>
     <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>
-    
+
     <script src='/pomelo/js/script.js'></script>
-    
+
     <link rel='stylesheet' href='/pomelo/css/main.css' />
   </head>
 
 <body>
-    
+
     <img id='logo' src='img/pomelo.png' height='90px' width='90px' alt='Logo description' />
-    
-    <span id='titolo'>
-        <h1 id='itolo'></h1>
+
+    <span id='title'>
+        <h1 id='title'></h1>
         <!-- <a href='admin.php' class='adminButton'> -->
         <!-- <a href='#' onclick="$('#menu').collapse('toggle')" class='adminButton'> -->
         <!-- <a href='#' id="admin_button" class='adminButton'>
@@ -55,29 +55,29 @@
 
         </div>
     </center>
-    
+
 
     <div id='content' class='container-fluid'>
 
         <center>
-            <h3>Benvenuto su Pomelo!</h3><br>
+            <h3>Welcome to Pomelo!</h3><br>
             <img id='logo_pomelo' src='img/pomelo.png' height='140px' width='140px' alt='logo' /><br>
 
             <br>
             <br>
-            
+
             <div class='' role='group' aria-label='1g'>
                 <div class='input-padding' role='group' aria-label='2g'>
-                    
+
                     <form action="/pomelo/submit.php" method="post">
                         <input type="hidden" name="action" value="create">
                         <div class="input-group input-padding">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Crea torneo</span>
+                                <span class="input-group-text" id="basic-addon1">Create League</span>
                             </div>
-                            
-                            <input class="form-control" name="torneo" placeholder="Nome">
-                            
+
+                            <input class="form-control" name="league" placeholder="name">
+
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary bg-danger text-white bigFontButton"
                                     type="submit">
@@ -87,19 +87,19 @@
                         </div>
                     </form>
                 </div>
-                
+
                 <div class='input-padding' role='group' aria-label='2g'>
                     <form action="/pomelo/submit.php" method="post">
                         <input type="hidden" name="action" value="goto">
                         <div class="input-group input-padding">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Mostra</span>
+                                <span class="input-group-text">Show</span>
                             </div>
-                            <select class="custom-select" name="torneo">
-                                <option value="" disabled selected>Torneo</option>
-                                {TORNEI}
+                            <select class="custom-select" name="league">
+                                <option value="" disabled selected>League</option>
+                                {LEAGUE}
                             </select>
-                            
+
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary bg-danger text-white bigFontButton" type="submit">
                                     <ion-icon size="large" name="md-arrow-round-forward"></ion-icon>
@@ -109,8 +109,8 @@
                     </form>
                 </div>
             </div>
-        </center> 
-        
+        </center>
+
     </div>
 
     <!-- ion-icons -->
