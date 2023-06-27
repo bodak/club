@@ -16,7 +16,7 @@ def exportLeague(league):
 
 
 def importLeague(league):
-    file_path = data_dir + "/" + str(league) + "/" + str(league) + ".json"
+    file_path = data_dir + "/" + str(league) + ".json"
     with open(file_path, "r") as file_json:
         dict_league = json.load(file_json)
 
@@ -26,15 +26,10 @@ def importLeague(league):
 
 
 def createLeague(name):
-    dir_path = data_dir + "/" + name
-    file_path = dir_path + "/" + name + ".json"
-    imgs_path = dir_path + "/img"
-    qr_path = imgs_path + "/qr.png"
-    logo_path = imgs_path + "/logo.png"
+    file_path = data_dir + "/" + name + ".json"
 
     league = {
         "name": name,
-        "FOLDER": dir_path,
         "JSON_DATA": file_path,
         "PLAYERS": {},
         "MATCHES": [],
@@ -42,29 +37,12 @@ def createLeague(name):
         "LOGO": "",
     }
 
-    if not os.path.exists(dir_path):
-        os.makedirs(dir_path)
-        os.makedirs(imgs_path)
-
-        if not os.path.exists(file_path):
-            with open(file_path, "w") as fp:
-                json.dump(league, fp)
-
-            # with open(qr_path, 'w') as fp:
-            # 	command = "wget -O r/" + name + "/img/qr.png 'https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=" + "http://flowin.space/pomelo/r/'" + name
-            # 	os.system(command)
-
-            # logo
-            # with open(file_path, 'w') as fp:
-            # 	json.dump(league, fp)
-
-            buildHtml(name)
-            buildHtml("index")
-
+    if not os.path.exists(file_path):
+        with open(file_path, "w") as fp:
+            json.dump(league, fp)
     else:
         print("name present, change name please.\n")
         return
-
     return league
 
 
@@ -314,69 +292,8 @@ def matchHtml(league):
     return matchTable
 
 
-def buildHtml(league_in):
-    if league_in == "_ALL_":
-        buildHtml("index")
-        for league_name in listLeagues():
-            buildHtml(league_name)
-
-    elif league_in == "index":
-        index_template = open("templates/index.html", "r")
-        new_index = open(f"{data_dir}/index.html", "w")
-        league = listLeagues("html")
-
-        new_index_content = index_template.read().format(LEAGUE=league)
-        new_index.write(new_index_content)
-        index_template.close()
-        new_index.close()
-    else:
-        if league_in in listLeagues():
-            league = importLeague(league_in)
-        else:
-            league = createLeague(league_in)
-
-        match = matchHtml(league)
-        ranking = rankingHtml(league)
-        PLAYERS = selectPlayersHtml(league)
-
-        index_template = open("templates/tournament_index.html", "r")
-        new_index = open(league["FOLDER"] + "/" + "index.html", "w")
-
-        if league["LOGO"] != "":
-            logo_url = league["LOGO"]
-        else:
-            logo_url = "/pomelo/img/pomelo.png"
-
-        new_index_content = index_template.read().format(
-            LEAGUE=league["name"],
-            MATCH=match,
-            RANKING=ranking,
-            PLAYERS=PLAYERS,
-            LOGO=logo_url,
-        )
-        new_index.write(new_index_content)
-        index_template.close()
-        new_index.close()
-
-    # T E S T
-    # print(new_index_content)
-
-
 def listLeagues(out="none"):
-    dirs = os.listdir(data_dir)
-
-    if out == "stout":
-        for league in dirs:
-            print(league)
-        return
-
-    elif out == "html":
-        select = ""
-        for league in sorted(dirs):
-            select += "<option value='" + league + "'>" + league + "</option>\n"
-        return select
-    else:
-        return dirs
+    return [f[:-5] for f in os.listdir(data_dir)]
 
 
 # parses php input and removes any single bracket
@@ -426,9 +343,6 @@ def main():
 
                     if createleague:
                         print("league created, follow the help to populate it")
-
-                elif option_arg == "--gen-index":
-                    buildHtml(league_arg)
 
                 elif option_arg == "-i" or option_arg == "--import":
                     league = importLeague(league_arg)
